@@ -12,6 +12,7 @@ angular.module('alurapic')
                     $location.path('/');
                 }).catch((err) => {
                     console.log(err);
+                    $scope.usuario = {};
                     $scope.mensagem = 'Login ou senha inválidos';
                 });
         };

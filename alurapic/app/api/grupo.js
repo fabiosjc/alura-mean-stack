@@ -1,4 +1,4 @@
-var api = {}
+var api = {};
 
 api.lista = function(req, res) {
     var grupos = [
