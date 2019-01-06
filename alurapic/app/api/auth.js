@@ -8,21 +8,22 @@ module.exports = function(app) {
     var secret = app.get('ENV_SECRET');
 
     api.autentica = function(req, res) {
-        model.findOne({login: req.body.login, senha: req.body.senha})
+        model
+            .findOne({login: req.body.login, senha: req.body.senha})
             .then((usuario) => {
                 if (!usuario) {
                     console.log('Login e senha inválidos');
                     res.sendStatus(401);
                 }
 
-                var token = jwt.sign(usuario.login, secret, {expiresIn: 84600}); // 24h
+                var token = jwt.sign({login: usuario.login}, secret, {expiresIn: 84600}); // 24h
                 console.log('Token criado e sendo enviado ao header de resposta');
                 res.set('x-access-token', token);
                 res.end();
-            }).catch((err) => {
+            }, function(err) {
                 console.log('Login e senha inválidos', err);
                 res.sendStatus(401);
-        });
+            });
     };
 
     api.verificaToken = function(req, res, next) {
